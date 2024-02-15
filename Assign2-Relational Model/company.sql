@@ -115,10 +115,12 @@ CREATE TABLE Room (
 );
 
 CREATE TABLE Furnishings (
-PropertyID INT PRIMARY KEY,
+PropertyID INT,
 Furnishing VARCHAR(15),
 FOREIGN KEY (PropertyID) REFERENCES RentalProperty(PropertyID)
 );
+
+
 
 
 INSERT INTO Owner (OwnerID, FirstName, LastName, PhoneNumber) VALUES
@@ -138,12 +140,12 @@ INSERT INTO PropertyManager (ManagerID, FirstName, LastName, PhoneNumber) VALUES
 ('jk176', 'Issei', 'Hyoudou', '555-1666');
 
 INSERT INTO RentalGroup (GroupID, AccomodationType, PreferredNumBath, PreferredNumBed, PreferredLaundry, PreferredAccessibility, ParkingDesired, MaxRent) VALUES
-(1123, 'Apartment', 1, 2, Shared, 'Wheelchair Access', TRUE, 100000),
-(2234, 'House', 2, 3, ENSUIT, 'None', TRUE, 90000),
-(3567, 'Room', 3, 2, Shared, 'None', FALSE, 100),
-(4567, 'House', 4, 3, Shared, 'None', TRUE, 1500),
-(5567, 'Apartment', 1, 2, Shared, 'Riveted Stairs For Blind', TRUE, 2500),
-(6345, 'Room', 2, 3, Shared, 'None', FALSE, 2000);
+(1123, 'Apartment', 1, 2, 'Shared', 'Wheelchair Access', TRUE, 100000),
+(2234, 'House', 2, 3, 'ENSUIT', 'None', TRUE, 90000),
+(3567, 'Room', 3, 2, 'Shared', 'None', FALSE, 100),
+(4567, 'House', 4, 3, 'Shared', 'None', TRUE, 1500),
+(5567, 'Apartment', 1, 2, 'Shared', 'Riveted Stairs For Blind', TRUE, 2500),
+(6345, 'Room', 2, 3, 'Shared', 'None', FALSE, 2000);
 
 INSERT INTO Renter (StudentID, FirstName, LastName, PhoneNumber, ExpectedGraduationYear, ProgramOfStudy, GroupID) VALUES
 (10011001, 'Emily', 'Clark', '555-5555', 2024, 'Computer Science', 1123),
@@ -194,9 +196,15 @@ INSERT INTO RentalAgreement (AgreementID, LeaseStartDate, LeaseEndDate, TotalMon
 (3, '2023-03-01', '2024-03-01', 20000.00, 3333, 3567, '2023-03-01'),
 (4, '2023-04-01', '2024-04-01', 100.00, 4444, 4567, '2023-04-01'),
 (5, '2023-03-01', '2024-03-01', 9000.00, 5555, 5567, '2023-03-01'),
-(6, '2023-04-01', '2024-04-01', 32.00, 6666, 6345, '2023-04-01'),
+(6, '2023-04-01', '2024-04-01', 32.00, 6666, 6345, '2023-04-01');
 
-
+INSERT INTO Furnishings (PropertyID, Furnishing) VALUES
+(4444,'Chair'),
+(8888,'Stool'),
+(4444,'Motorcycle'),
+(8888,'Desk'),
+(4444,'Bench'),
+(8888,'Log');
 
 
 
