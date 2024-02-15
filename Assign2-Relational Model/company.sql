@@ -24,7 +24,7 @@ CREATE TABLE RentalGroup (
     PreferredLaundry VARCHAR(15) NOT NULL,
     PreferredAccessibility TEXT,
     ParkingDesired BOOLEAN NOT NULL,
-    MaxRent INT
+    MaxRent INT NOT NULL
 
 );
 
@@ -115,8 +115,8 @@ CREATE TABLE Room (
 );
 
 CREATE TABLE Furnishings (
-PropertyID INT,
-Furnishing VARCHAR(15),
+PropertyID INT NOT NULL,
+Furnishing VARCHAR(15) NOT NULL,
 FOREIGN KEY (PropertyID) REFERENCES RentalProperty(PropertyID)
 );
 
