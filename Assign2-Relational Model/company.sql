@@ -1,24 +1,33 @@
+drop database if exists RentalDB;
+create database RentalDB;
 
-create database companydb;
-
+CREATE TABLE Owner (
+    OwnerID VARCHAR(50) NOT NULL,
+    FirstName VARCHAR(100) NOT NULL,
+    LastName VARCHAR(100) NOT NULL,
+    PhoneNumber VARCHAR(50) NOT NULL UNIQUE,
+    PRIMARY KEY (OwnerID)
+);
 CREATE TABLE RentalProperty (
-    PropertyID INT PRIMARY KEY,
-    Address VARCHAR(255),
-    City VARCHAR(100),
-    Province VARCHAR(100),
-    PostalCode VARCHAR(10),
-    ApartmentNumber VARCHAR(10) NULL,
-    Type VARCHAR(50),
-    NumberOfBedrooms INT,
-    NumberOfBathrooms INT,
-    Parking BOOLEAN,
-    LaundryType VARCHAR(50),
-    ListingDate DATE,
-    Accessible BOOLEAN,
-    CostPerMonth DECIMAL(10, 2)
+    PropertyID INT PRIMARY KEY NOT NULL,
+    Address VARCHAR(255) NOT NULL,
+    City VARCHAR(100) NOT NULL,
+    Province VARCHAR(100) NOT NULL,
+    PostalCode VARCHAR(10) NOT NULL,
+    ApartmentNumber VARCHAR(10),
+    Type VARCHAR(50) NOT NULL,
+    NumberOfBedrooms INT NOT NULL,
+    NumberOfBathrooms INT NOT NULL,
+    Parking BOOLEAN NOT NULL,
+    LaundryType VARCHAR(50) NOT NULL,
+    ListingDate DATE NOT NULL,
+    Accessible BOOLEAN NOT NULL,
+    CostPerMonth DECIMAL(10, 2) NOT NULL,
+    OwnerID VARCHAR(50),
+    FOREIGN KEY (OwnerID) REFERENCES Owner(OwnerID) ON DELETE SET NULL,
+    PRIMARY KEY (PropertyID)
 );
 
--- Create House Extension Table
 CREATE TABLE House (
     PropertyID INT PRIMARY KEY,
     FencedYard BOOLEAN,
@@ -26,7 +35,6 @@ CREATE TABLE House (
     FOREIGN KEY (PropertyID) REFERENCES RentalProperty(PropertyID)
 );
 
--- Create Apartment Extension Table
 CREATE TABLE Apartment (
     PropertyID INT PRIMARY KEY,
     FloorNumber INT,
@@ -34,7 +42,6 @@ CREATE TABLE Apartment (
     FOREIGN KEY (PropertyID) REFERENCES RentalProperty(PropertyID)
 );
 
--- Create Room Extension Table
 CREATE TABLE Room (
     PropertyID INT PRIMARY KEY,
     NumberOfCoOccupants INT,
@@ -43,15 +50,7 @@ CREATE TABLE Room (
     FOREIGN KEY (PropertyID) REFERENCES RentalProperty(PropertyID)
 );
 
--- Create Owner Table
-CREATE TABLE Owner (
-    OwnerID VARCHAR(50) PRIMARY KEY,
-    FirstName VARCHAR(100),
-    LastName VARCHAR(100),
-    PhoneNumber VARCHAR(50) UNIQUE
-);
 
--- Create PropertyManager Table
 CREATE TABLE PropertyManager (
     ManagerID VARCHAR(50) PRIMARY KEY,
     FirstName VARCHAR(100),
@@ -60,35 +59,44 @@ CREATE TABLE PropertyManager (
     -- Note: ManagementStartYear might be better suited in a separate table if a manager can manage multiple properties
 );
 
--- Create Renter Table
 CREATE TABLE Renter (
-    StudentID VARCHAR(50) PRIMARY KEY,
-    FirstName VARCHAR(100),
-    LastName VARCHAR(100),
-    PhoneNumber VARCHAR(50),
-    ExpectedGraduationYear INT,
-    ProgramOfStudy VARCHAR(255),
-    GroupID INT,
-    FOREIGN KEY (GroupID) REFERENCES RentalGroup(GroupID)
+    StudentID VARCHAR(50) NOT NULL,
+    FirstName VARCHAR(100) NOT NULL,
+    LastName VARCHAR(100) NOT NULL,
+    PhoneNumber VARCHAR(50) NOT NULL,
+    ExpectedGraduationYear INT NOT NULL,
+    ProgramOfStudy VARCHAR(255) NOT NULL,
+    GroupID INT NOT NULL,
+    FOREIGN KEY (GroupID) REFERENCES RentalGroup(GroupID) ON DELETE CASCADE,
+    PRIMARY KEY (StudentID)
 );
 
--- Create RentalGroup Table
-CREATE TABLE RentalGroup (
-    GroupID INT PRIMARY KEY,
-    Preferences TEXT -- Consider detailing out or normalizing preferences
-);
-
--- Create RentalAgreement Table
 CREATE TABLE RentalAgreement (
-    AgreementID INT PRIMARY KEY,
-    PropertyID INT,
-    GroupID INT,
-    LeaseStartDate DATE,
-    LeaseEndDate DATE,
-    TotalMonthlyRent DECIMAL(10, 2),
-    FOREIGN KEY (PropertyID) REFERENCES RentalProperty(PropertyID),
-    FOREIGN KEY (GroupID) REFERENCES RentalGroup(GroupID)
+    AgreementID INT PRIMARY KEY NOT NULL,
+    PropertyID INT NOT NULL,
+    GroupID INT NOT NULL,
+    LeaseStartDate DATE NOT NULL,
+    LeaseEndDate DATE NOT NULL,
+    TotalMonthlyRent DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (PropertyID) REFERENCES RentalProperty(PropertyID) ON DELETE CASCADE,
+    FOREIGN KEY (GroupID) REFERENCES RentalGroup(GroupID) ON DELETE CASCADE,
+    PRIMARY KEY (AgreementID)
 );
+
+
+CREATE TABLE RentalGroup (
+    GroupID INT PRIMARY KEY NOT NULL,
+    Preferences TEXT,
+    PRIMARY KEY (GroupID)
+);
+
+
+
+
+
+
+
+
 
 
 -- Insert into RentalProperty
